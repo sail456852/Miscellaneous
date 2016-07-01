@@ -1,0 +1,41 @@
+#include <iostream>
+#include <string>
+#include <initializer_list>
+
+//This example copied from Stackoverflow.com .I can't understand how to use ... yet 
+//What I understand now is you can't declare ... in a normal function defination , but I don't know how to use it yet .
+
+template <typename T>
+void func(T t)
+{
+    std::cout << t << std::endl ;
+}
+
+template<typename T, typename... Args>
+void func(T t, Args... args) // recursive variadic function
+{
+    std::cout << t <<std::endl ;
+
+    func(args...) ;
+}
+
+template <class T>
+void func2( std::initializer_list<T> list )  //the function demonstrates how to use standard initializer list 
+{                                   //initializer list is used for variable number of variables of same type 
+    for( auto elem : list )
+    {
+        std::cout << elem << std::endl ;
+    }
+}
+
+int main()
+{
+    std::string
+    str1( "Hello" ),
+    str2( "world" );
+
+    func(1,2.5,'a',str1);   //passing ,int ,float , char , string into a variadic function
+
+    func2( {10, 20, 30, 40 }) ;  //demo 1
+    func2( {str1, str2 } ) ;   //demo 2
+}
