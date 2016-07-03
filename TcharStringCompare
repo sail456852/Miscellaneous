@@ -1,0 +1,20 @@
+#include <windows.h>
+#include <stdio.h>
+#include <tchar.h>
+#include <psapi.h>
+#include <iostream>
+
+// To ensure correct resolution of symbols, add Psapi.lib to TARGETLIBS
+// and compile with -DPSAPI_VERSION=1
+
+int main ()
+{
+	TCHAR process[260] = TEXT ("notepad.exe");
+	TCHAR process2[260] = TEXT ("notepad.exe");
+
+	if (!_tcscmp(process,process2)) //0 = equal ,else not equal
+		std::cout << "I am okay";
+	else 
+		std::cout << "I am not okay";
+
+}
