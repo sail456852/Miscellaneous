@@ -5,7 +5,7 @@
 int main()
 {
     HWND notepad = FindWindow(_T("Notepad"), NULL);  //find the handle of the notepad process
-    HWND edit = FindWindowEx(notepad, NULL, _T("Edit"), NULL); //find the handle by using class name
+    HWND edit = FindWindowEx(notepad, NULL, _T("Edit"), NULL); //I believe this is the handle of the class included in the parent Window
     SendMessage(edit, WM_SETTEXT, NULL, (LPARAM)_T("hello,biatch!")); //send a message to a handle
 }
 
