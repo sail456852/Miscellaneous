@@ -1,3 +1,4 @@
+//#undef UNICODE //if you wanna use ANSCII mode ,put this in front of everything 
 #include <windows.h>
 #include <tchar.h>
 
