@@ -1,0 +1,26 @@
+#include <windows.h>
+
+int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	// Eliminate user's interaction for 500 ms
+	//Sleep (500);
+
+	// Turn off monitor
+	SendMessage (HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)2);
+
+	// Turn on monitor
+	//	SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM) -1);
+
+	// Low power monitor
+	//	SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM) 1);
+
+	return 0;
+}
+
+//Weird thing is  the program keeps running in the background even without loop , aha . 
+
+
+//Don't use main() , or the linker will complain !  
+//Like this 
+//1>MSVCRT.lib(exe_winmain.obj) : error LNK2001: unresolved external symbol _WinMain@16
+//1>c:\users\ff-ssd\documents\visual studio 2015\Projects\ScreenOff\Release\ScreenOff.exe : fatal error LNK1120: 1 unresolved externals
