@@ -1,0 +1,35 @@
+#pragma once
+
+#include <fstream>
+#include <vector>
+#include <Windows.h>
+#include <string>
+
+namespace Mail
+{
+	const  std::string &PowerShellScript = "Get-Service >> C:\\test\\1.txt";
+	int SendMail ()
+	{
+		bool ok;
+		std::string param = PowerShellScript;
+// Let me 
+		SHELLEXECUTEINFO ShExecInfo = { 0 };
+		ShExecInfo.cbSize = sizeof (SHELLEXECUTEINFO);
+		ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+		ShExecInfo.hwnd = NULL;
+		ShExecInfo.lpVerb = "open";   //I made change here 
+		ShExecInfo.lpFile = "powershell";  // I made change here  
+		ShExecInfo.lpParameters = param.c_str ();
+		ShExecInfo.lpDirectory = NULL;
+		ShExecInfo.nShow = SW_HIDE;
+		ShExecInfo.hInstApp = NULL;
+		ok = (bool)ShellExecuteEx (&ShExecInfo);
+		if (!ok)
+			return -3;
+		WaitForSingleObject (ShExecInfo.hProcess, 7000);
+		DWORD exit_code = 100;
+		GetExitCodeProcess (ShExecInfo.hProcess, &exit_code);
+		return (int)exit_code;
+	} //I tested it ,it works . without needing to create a script file .
+}
+
