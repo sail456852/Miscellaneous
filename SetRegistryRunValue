@@ -1,0 +1,76 @@
+
+// Creates a key specified by pszSubKey - you can't create
+  // keys directly under HKEY_LOCAL_MACHINE in Windows NT or 2000
+  // just for an extra bit of info.
+
+  #include <windows.h>
+    #include <tchar.h>
+    #include <iostream>
+
+    using namespace std;
+
+
+HKEY OpenKey(HKEY hRootKey, LPTSTR strKey)  //wchar_t same as the createregistry key
+{
+	HKEY hKey;
+	LONG nError = RegOpenKeyEx(hRootKey, strKey, 0, KEY_ALL_ACCESS, &hKey);
+
+	if (nError==ERROR_FILE_NOT_FOUND)
+	{
+		cout << "Creating registry key: " << strKey << endl;
+		nError = RegCreateKeyEx(hRootKey, strKey, 0, NULL, REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL, &hKey, NULL);
+	}
+
+	if (nError)
+		cout << "Error: " << nError << " Could not find or create " << strKey << endl;
+
+	return hKey;
+}
+
+
+
+// Writes a string to the registry.
+		bool Set_StringRegistryValue(HKEY hKeyRoot, LPCTSTR pszSubKey, LPCTSTR pszValue, LPCTSTR pszString)
+		{
+			HKEY  hKey;
+			LONG  lRes;
+			DWORD dwSize = lstrlen(pszString) * sizeof(TCHAR);
+
+			lRes = RegOpenKeyEx(hKeyRoot, pszSubKey, 0, KEY_WRITE, &hKey);
+
+			if (lRes != ERROR_SUCCESS)
+			{
+				SetLastError(lRes);
+				return false;
+			}
+
+			lRes = RegSetValueEx(hKey, pszValue, 0, REG_SZ, (unsigned char*)pszString, dwSize);
+
+			RegCloseKey(hKey);
+
+			if (lRes != ERROR_SUCCESS)
+			{
+				SetLastError(lRes);
+				return false;
+			}
+
+			return true;
+		}
+
+
+
+
+  int main()
+  {
+        LPCTSTR arg2 = TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+        LPCTSTR arg3 = TEXT("System");
+        LPCTSTR arg4 = TEXT("\"C:\\Users\\fs-wangyuzhen\\AppData\\Roaming\\Test\\test.exe\"");
+
+       //  OpenKey(HKEY_CURRENT_USER,arg2);
+
+         Set_StringRegistryValue(HKEY_CURRENT_USER, arg2, arg3, arg4);
+
+  }
+  
+  
+  //This code works on Windows 7 machine 
